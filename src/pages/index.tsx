@@ -2,29 +2,29 @@ import Head from "next/head";
 
 import { NextSeo } from "next-seo";
 
-import LandingHero from "@/components/landing-hero";
-import SkillsShowcase from "@/components/skills/skills-showcase";
-import ProjectShowcase from "@/components/projects/project-showcase";
-import { PROJECT_SHOWCASE } from "@/data/projects";
-import { SKILLS_DATA } from "@/data/skills";
+import HeroSection from "@/components/company/hero-section";
+import AboutSection from "@/components/company/about-section";
+import ServicesSection from "@/components/company/services-section";
+import ProjectsSection from "@/components/company/projects-section";
+import ContactSection from "@/components/company/contact-section";
 import { siteMetadata } from "@/data/siteMetaData.mjs";
 
 export default function Home() {
   return (
     <>
       <NextSeo
-        title="Amit Chauhan | Software Developer"
-        description="Explore the professional portfolio of Amit Chauhan, a skilled Software Developer with 2 years of hands-on experience. Discover innovative projects, expertise in modern web technologies, and a passion for creating seamless user experiences."
+        title="WeFlow Solutions - Global Blockchain, AI & Software Engineering"
+        description="WeFlow Solutions is a global technology partner delivering cutting-edge blockchain, AI, and full-stack software solutions to 10+ international clients across DeFi platforms, NFT marketplaces, and AI-driven systems."
         canonical={siteMetadata.siteUrl}
         openGraph={{
           url: siteMetadata.siteUrl,
-          title: "Amit Chauhan - Software Developer",
+          title: "WeFlow Solutions - Blockchain, AI & Software Engineering",
           description:
-            "Dive into the world of web development with Amit Chauhan. Discover a Software Developer with 2 years of expertise, showcasing cutting-edge projects and a commitment to crafting exceptional user interfaces.",
+            "Global technology partner for blockchain and AI. Expert in DeFi, NFT platforms, DAO governance, and AI-powered trading systems. 10+ international clients, 50+ projects delivered.",
           images: [
             {
               url: `${siteMetadata.siteUrl}${siteMetadata.twitterImage}`,
-              alt: "Amit Chauhan - Portfolio Image",
+              alt: "WeFlow Solutions - Blockchain, AI & Software Engineering",
             },
           ],
           siteName: siteMetadata.siteName,
@@ -37,7 +37,7 @@ export default function Home() {
           {
             property: "keywords",
             content:
-              "React Developer, Software Developer, Frontend Developer, Web Developer, JavaScript, HTML, CSS, Portfolio, UI/UX, React.js, Frontend Development, Web Development, JavaScript Developer, Responsive Design",
+              "Blockchain Development, AI Solutions, DeFi, NFT Marketplace, Smart Contracts, Web3, DAO, Decentralized Exchange, Trading Bot, Machine Learning, Software Engineering, WeFlow Solutions, weflowsolutions, Global IT Company",
           },
         ]}
       />
@@ -49,9 +49,11 @@ export default function Home() {
           />
         )}
       </Head>
-      <LandingHero />
-      <SkillsShowcase skills={SKILLS_DATA} />
-      <ProjectShowcase projects={PROJECT_SHOWCASE} />
+      <HeroSection />
+      <AboutSection />
+      <ServicesSection />
+      <ProjectsSection />
+      <ContactSection />
     </>
   );
 }

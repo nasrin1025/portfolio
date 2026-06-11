@@ -5,32 +5,126 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --border: 240 5.9% 90%;
+    --foreground: 228 39% 10%;
+    --border: 220 18% 90%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --accent: 183 65% 35%;
-    --accent-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 244 76% 57%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 220 20% 96%;
+    --muted-foreground: 222 14% 45%;
+    --brand-cyan: 190 95% 45%;
+    --brand-indigo: 244 76% 57%;
+    --brand-violet: 266 84% 58%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
+    --background: 230 35% 5%;
+    --foreground: 214 32% 96%;
+    --border: 229 24% 14%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --accent: 183 63% 40%;
-    --accent-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --accent: 243 92% 67%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 229 24% 11%;
+    --muted-foreground: 222 14% 64%;
+    --brand-cyan: 190 95% 55%;
+    --brand-indigo: 243 92% 67%;
+    --brand-violet: 266 92% 70%;
   }
 
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply min-h-screen bg-background text-foreground;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: linear-gradient(
+      180deg,
+      hsl(var(--brand-cyan)),
+      hsl(var(--brand-violet))
+    );
+  }
+}
+
+@layer utilities {
+  /* Signature brand gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-[hsl(var(--brand-cyan))] via-[hsl(var(--brand-indigo))] to-[hsl(var(--brand-violet))] bg-clip-text text-transparent;
+  }
+
+  /* Brand gradient surface (buttons, pills) */
+  .bg-brand-gradient {
+    background-image: linear-gradient(
+      100deg,
+      hsl(var(--brand-cyan)),
+      hsl(var(--brand-indigo)) 50%,
+      hsl(var(--brand-violet))
+    );
+  }
+
+  /* Subtle blueprint grid that fades out radially */
+  .bg-grid-glow {
+    background-image: linear-gradient(
+        to right,
+        hsl(var(--foreground) / 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        hsl(var(--foreground) / 0.06) 1px,
+        transparent 1px
+      );
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 30%,
+      black 30%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 30%,
+      black 30%,
+      transparent 100%
+    );
+  }
+
+  /* Glass panel */
+  .glass-panel {
+    @apply border border-foreground/10 bg-background/60 backdrop-blur-xl;
+  }
+
+  /* Gradient border card: wrap content in an inner element with bg-background */
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(hsl(var(--background)), hsl(var(--background)))
+        padding-box,
+      linear-gradient(
+          135deg,
+          hsl(var(--brand-cyan) / 0.6),
+          hsl(var(--brand-indigo) / 0.25),
+          hsl(var(--brand-violet) / 0.6)
+        )
+        border-box;
+    border: 1px solid transparent;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
   }
 }

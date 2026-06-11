@@ -1,6 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -22,44 +21,94 @@ export interface NavbarProps {
 }
 
 export default function Navbar(props: NavbarProps) {
-  const pathName = usePathname();
-
+  const [activeSection, setActiveSection] = useState("#home");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 16);
+
+      const sections = ["home", "about", "services", "projects", "contact"];
+      const scrollPosition = window.scrollY + 200;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetBottom = offsetTop + element.offsetHeight;
+
+          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+            setActiveSection(`#${section}`);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const element = document.getElementById(href.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 mt-2 px-6 py-8 sm:mt-8 sm:px-14 md:px-20">
+    <header
+      className={classNames(
+        "sticky top-0 z-50 px-6 py-4 transition-all duration-300 sm:px-14 md:px-20",
+        isScrolled
+          ? "border-b border-foreground/10 bg-background/70 backdrop-blur-xl"
+          : "bg-transparent",
+      )}
+    >
       <div className="mx-auto flex items-center justify-between lg:max-w-7xl">
-        <Link
-          href="/"
-          className="drop-shadow-teralight flex items-center justify-center"
+        <button
+          onClick={() => {
+            const element = document.getElementById("home");
+            if (element) {
+              element.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }}
+          className="flex items-center justify-center"
           aria-label="Return to home page"
         >
-          <div className="relative h-12 w-12 sm:h-14 sm:w-14">
+          <div className="flex items-center">
             <AnimatedLogo />
           </div>
-        </Link>
-        <nav className="hidden items-center gap-2 rounded-full px-2 py-2 shadow-md ring-1 ring-zinc-200 backdrop-blur-md dark:ring-accent/50 md:flex">
-          <ul className="flex gap-2 text-sm font-medium">
+        </button>
+        <nav className="glass-panel hidden items-center gap-2 rounded-full px-2 py-1.5 shadow-md md:flex">
+          <ul className="flex gap-1 text-sm font-medium">
             {props.routes.map((_link, index) => {
               return (
-                <li
-                  key={index}
-                  className="my-3 transition-transform duration-100 hover:scale-[1.1]"
-                >
+                <li key={index} className="my-1.5">
                   <Link
                     href={_link.href}
+                    onClick={(e) => handleNavClick(e, _link.href)}
                     className={classNames(
-                      pathName === _link.href
-                        ? "font-semibold text-background dark:hover:text-foreground"
-                        : "text-foreground",
-                      "group relative mx-3 rounded-full px-3 py-2 transition-colors duration-200",
+                      activeSection === _link.href
+                        ? "font-semibold text-white"
+                        : "text-foreground/80 hover:text-foreground",
+                      "group relative mx-1 rounded-full px-4 py-2 transition-colors duration-200",
                     )}
                   >
-                    {_link.href === pathName && (
+                    {_link.href === activeSection && (
                       <motion.span
                         layoutId="tab-pill"
                         animate={{
@@ -71,7 +120,7 @@ export default function Navbar(props: NavbarProps) {
                             },
                           },
                         }}
-                        className="absolute inset-0 -z-10 rounded-full bg-accent group-hover:bg-accent/80"
+                        className="bg-brand-gradient absolute inset-0 -z-10 rounded-full shadow-glow"
                       ></motion.span>
                     )}
                     {_link.title}

@@ -1,14 +1,20 @@
 import { ReactNode } from "react";
 
-import { Montserrat } from "next/font/google";
+import { Inter, Sora } from "next/font/google";
 
 import Navbar from "@/layout/navbar";
 import Footer from "@/layout/footer";
 import { routes } from "@/data/navigationRoutes";
 import { classNames } from "@/utility/classNames";
 
-const montserrat = Montserrat({
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-sora",
 });
 
 export interface MainLayoutProps {
@@ -17,12 +23,12 @@ export interface MainLayoutProps {
 
 export default function MainLayout(props: MainLayoutProps) {
   return (
-    <>
-      <div className={classNames("min-h-screen", montserrat.className)}>
+    <div className={classNames("font-sans", inter.variable, sora.variable)}>
+      <div className="min-h-screen">
         <Navbar routes={routes} />
         <main>{props.children}</main>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
